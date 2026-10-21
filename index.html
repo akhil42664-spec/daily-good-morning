@@ -2,114 +2,232 @@
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Daily Good Morning 🌞</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#100b18">
+<title>Good Morning Bhakti</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#101426;color:white;font-family:Arial,sans-serif}
-header{text-align:center;padding:25px 10px;background:linear-gradient(135deg,#ff512f,#dd2476)}
-header h1{margin:0}
-#date{text-align:center;padding:18px;color:#ffe08a;font-size:18px}
-nav{display:flex;gap:8px;padding:10px;overflow-x:auto}
-button{border:0;border-radius:22px;padding:12px 15px;background:#29314b;color:white;white-space:nowrap;cursor:pointer}
-button.active{background:#e83e8c}
-#gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:12px}
-.card{background:#202741;border-radius:12px;overflow:hidden}
-.card img{display:block;width:100%;height:220px;object-fit:cover}
-.card h3{text-align:center;font-size:14px;padding:0 5px}
-.actions{display:flex;justify-content:center;gap:5px;padding:0 4px 12px}
-.actions button{font-size:12px;padding:10px 8px}
-footer{text-align:center;padding:20px;color:#ccc}
-@media(min-width:700px){#gallery{grid-template-columns:repeat(4,minmax(0,1fr))}.card img{height:300px}}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:linear-gradient(145deg,#100b18,#28152b,#090b14);
+  color:white;
+}
+header{
+  text-align:center;
+  padding:25px 12px;
+  background:linear-gradient(120deg,#32143d,#11101e);
+  border-bottom:1px solid #d7aa48;
+}
+h1{
+  margin:0;
+  color:#ffd778;
+  font-size:30px;
+  text-shadow:0 0 15px #b77b26;
+}
+header p{color:#f6dfb1}
+#today{color:#ffe5a0;font-weight:bold}
+.controls{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  justify-content:center;
+  padding:16px 8px;
+}
+button{
+  border:1px solid #e4bb64;
+  background:#24172c;
+  color:#ffe4a0;
+  border-radius:22px;
+  padding:11px 15px;
+  font-size:14px;
+  cursor:pointer;
+}
+button:active{transform:scale(.96)}
+#status{text-align:center;color:#ffe4a0;padding:10px}
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(155px,1fr));
+  gap:14px;
+  padding:12px;
+  max-width:1100px;
+  margin:auto;
+}
+.card{
+  background:#1b1422;
+  border:1px solid #8f6b35;
+  padding:7px;
+  border-radius:14px;
+  box-shadow:0 5px 18px #0008;
+}
+.card img{
+  width:100%;
+  aspect-ratio:3/4;
+  object-fit:cover;
+  display:block;
+  border-radius:9px;
+  background:#29202e;
+}
+.card button{width:100%;margin-top:8px}
+footer{
+  text-align:center;
+  padding:25px 10px;
+  color:#e7c994;
+}
 </style>
 </head>
+
 <body>
 <header>
-<h1>🌞 Daily Good Morning</h1>
-<p>Har subah khushiyon ke saath ❤️</p>
+  <h1>🙏 शुभ प्रभात 🙏</h1>
+  <p>Bhakti • Positive Vibes • New Morning</p>
+  <div id="today"></div>
 </header>
-<div id="date"></div>
-<nav id="nav">
-<button class="active" data-cat="all">✨ Sabhi</button>
-<button data-cat="god">🙏 Bhagwan Ji</button>
-<button data-cat="nature">🌹 Nature</button>
-<button data-cat="quote">💪 Motivation</button>
-</nav>
-<div id="gallery"></div>
-<footer>🌺 Aapka din shubh aur mangalmay ho 🌺</footer>
+
+<div class="controls">
+  <button onclick="loadPhotos('Shiva Hindu deity')">🔱 शिव जी</button>
+  <button onclick="loadPhotos('Hanuman Hindu deity')">🚩 हनुमान जी</button>
+  <button onclick="loadPhotos('Krishna Hindu deity')">🦚 श्री कृष्ण</button>
+  <button onclick="loadPhotos('Radha Krishna Hindu art')">💙 राधा रानी</button>
+  <button onclick="loadPhotos('Ganesha Hindu deity')">🙏 गणेश जी</button>
+  <button onclick="loadPhotos('Rama Hindu deity')">🏹 श्री राम</button>
+  <button onclick="loadPhotos('Durga Hindu goddess')">🌺 माता रानी</button>
+  <button onclick="loadPhotos('sunrise flowers nature')">🌅 प्रकृति</button>
+</div>
+
+<div id="status">अपनी पसंद के भगवान चुनें।</div>
+<div class="gallery" id="gallery"></div>
+
+<footer>🙏 आपका दिन शुभ और मंगलमय हो 🙏</footer>
 
 <script>
-const photos=[
-{title:"Subah ka Sundar Nazara",cat:"nature",url:"https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=700&q=80"},
-{title:"Khoobsurat Phool",cat:"nature",url:"https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=700&q=80"},
-{title:"Hari Bhari Prakriti",cat:"nature",url:"https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=700&q=80"},
-{title:"Pahadon ka Nazara",cat:"nature",url:"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=700&q=80"},
-{title:"Prakriti se Prerna",cat:"quote",url:"https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=700&q=80"},
-{title:"Nayi Shuruaat",cat:"quote",url:"https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=700&q=80"},
-{title:"Subah ki Roshni",cat:"nature",url:"https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=700&q=80"},
-{title:"Bhakti aur Aastha",cat:"god",url:"https://images.unsplash.com/photo-1606293926075-69a00dbfde81?auto=format&fit=crop&w=700&q=80"}
-];
-
-const date=new Date();
-document.getElementById("date").textContent="📅 "+date.toLocaleDateString("hi-IN",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
-
-function render(category){
-const gallery=document.getElementById("gallery");
-gallery.replaceChildren();
-const list=photos.filter(p=>category==="all"||p.cat===category);
-
-list.forEach(p=>{
-const card=document.createElement("article");
-card.className="card";
-const img=document.createElement("img");
-img.src=p.url;
-img.alt=p.title;
-img.loading="lazy";
-
-const title=document.createElement("h3");
-title.textContent=p.title+" • "+date.getDate();
-
-const actions=document.createElement("div");
-actions.className="actions";
-const download=document.createElement("button");
-download.textContent="⬇️ Download";
-download.onclick=async()=>{
-try{
-const response=await fetch(p.url);
-if(!response.ok)throw new Error();
-const blob=await response.blob();
-const link=document.createElement("a");
-link.href=URL.createObjectURL(blob);
-link.download="good-morning.jpg";
-link.click();
-setTimeout(()=>URL.revokeObjectURL(link.href),2000);
-}catch(e){window.open(p.url,"_blank");}
-};
-
-const share=document.createElement("button");
-share.textContent="📲 Share";
-share.onclick=async()=>{
-if(navigator.share){
-try{await navigator.share({title:p.title,url:p.url});}catch(e){}
-}else{
-window.open("https://wa.me/?text="+encodeURIComponent(p.title+" "+p.url),"_blank");
-}
-};
-
-actions.append(download,share);
-card.append(img,title,actions);
-gallery.append(card);
+const today = new Date().toLocaleDateString('en-IN',{
+  day:'numeric',month:'long',year:'numeric'
 });
+document.getElementById('today').textContent = today;
+
+let requestNumber = 0;
+
+async function loadPhotos(searchTerm){
+  const currentRequest = ++requestNumber;
+  const gallery = document.getElementById('gallery');
+  const status = document.getElementById('status');
+
+  gallery.innerHTML = '';
+  status.textContent = 'Photos load ho rahi hain...';
+
+  try{
+    const api = 'https://commons.wikimedia.org/w/api.php'
+      + '?action=query&generator=search'
+      + '&gsrsearch=' + encodeURIComponent(searchTerm + ' filetype:bitmap')
+      + '&gsrnamespace=6&gsrlimit=20'
+      + '&prop=imageinfo&iiprop=url&iiurlwidth=700'
+      + '&format=json&origin=*';
+
+    const response = await fetch(api);
+    if(!response.ok) throw new Error('Network error');
+
+    const data = await response.json();
+
+    if(currentRequest !== requestNumber) return;
+
+    const pages = Object.values(data.query?.pages || {});
+    if(!pages.length){
+      status.textContent = 'Photos nahi mili. Dobara try karo.';
+      return;
+    }
+
+    status.textContent = pages.length + ' photos mili hain.';
+
+    pages.forEach(page=>{
+      const info = page.imageinfo?.[0];
+      if(!info) return;
+
+      const url = info.thumburl || info.url;
+      if(!url) return;
+
+      const card = document.createElement('div');
+      card.className = 'card';
+
+      const img = document.createElement('img');
+      img.alt = page.title;
+      img.loading = 'lazy';
+      img.crossOrigin = 'anonymous';
+
+      const download = document.createElement('button');
+      download.textContent = '⬇️ Download Photo';
+
+      card.appendChild(img);
+      card.appendChild(download);
+      gallery.appendChild(card);
+
+      img.onload = ()=>{
+        if(!img.naturalWidth) return;
+
+        try{
+          const canvas = document.createElement('canvas');
+          const width = img.naturalWidth;
+          const height = img.naturalHeight;
+          canvas.width = width;
+          canvas.height = height;
+
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img,0,0,width,height);
+
+          // Golden shaded area at the bottom
+          const bandHeight = Math.round(height * 0.22);
+          const gradient = ctx.createLinearGradient(
+            0,height-bandHeight,0,height
+          );
+          gradient.addColorStop(0,'rgba(12,7,18,0.35)');
+          gradient.addColorStop(1,'rgba(12,7,18,0.94)');
+          ctx.fillStyle = gradient;
+          ctx.fillRect(0,height-bandHeight,width,bandHeight);
+
+          ctx.textAlign = 'center';
+          ctx.shadowColor = '#000';
+          ctx.shadowBlur = 8;
+          ctx.fillStyle = '#ffdc83';
+          ctx.font = 'bold ' + Math.round(width*0.075) + 'px Georgia';
+          ctx.fillText('GOOD MORNING',width/2,height-bandHeight*0.48);
+
+          ctx.shadowBlur = 3;
+          ctx.fillStyle = '#fff0c2';
+          ctx.font = 'bold ' + Math.round(width*0.037) + 'px Arial';
+          ctx.fillText(today,width/2,height-bandHeight*0.19);
+
+          ctx.shadowBlur = 0;
+
+          // Preview also shows the finished greeting
+          img.dataset.finished = canvas.toDataURL('image/jpeg',0.92);
+
+          download.onclick = ()=>{
+            const link = document.createElement('a');
+            link.href = img.dataset.finished;
+            link.download = 'Good-Morning-' + Date.now() + '.jpg';
+            link.click();
+          };
+        }catch(error){
+          download.textContent = 'Photo export nahi hua';
+          download.disabled = true;
+        }
+      };
+
+      img.onerror = ()=>{
+        card.remove();
+      };
+
+      img.src = url;
+    });
+
+  }catch(error){
+    if(currentRequest === requestNumber){
+      status.textContent =
+        'Internet check karo aur phir category par tap karo.';
+    }
+  }
 }
-
-document.getElementById("nav").addEventListener("click",event=>{
-const button=event.target.closest("button");
-if(!button)return;
-document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("active",b===button));
-render(button.dataset.cat);
-});
-
-render("all");
 </script>
 </body>
 </html>
