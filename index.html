@@ -2,127 +2,114 @@
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Daily Good Morning</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Daily Good Morning 🌞</title>
 <style>
 *{box-sizing:border-box}
-body{
- margin:0;
- background:#0b1020;
- color:white;
- font-family:Arial,sans-serif
-}
-header{
- text-align:center;
- padding:25px 10px;
- background:linear-gradient(135deg,#ff512f,#dd2476)
-}
-header h1{margin:0;font-size:28px}
-.date{
- text-align:center;
- padding:18px 5px;
- font-size:18px;
- color:#ffe18a
-}
-.categories{
- display:flex;
- overflow-x:auto;
- gap:8px;
- padding:10px
-}
-button{
- border:0;
- border-radius:25px;
- padding:12px 15px;
- color:white;
- background:#252e49;
- cursor:pointer;
- white-space:nowrap
-}
+body{margin:0;background:#101426;color:white;font-family:Arial,sans-serif}
+header{text-align:center;padding:25px 10px;background:linear-gradient(135deg,#ff512f,#dd2476)}
+header h1{margin:0}
+#date{text-align:center;padding:18px;color:#ffe08a;font-size:18px}
+nav{display:flex;gap:8px;padding:10px;overflow-x:auto}
+button{border:0;border-radius:22px;padding:12px 15px;background:#29314b;color:white;white-space:nowrap;cursor:pointer}
 button.active{background:#e83e8c}
-.gallery{
- display:grid;
- grid-template-columns:repeat(2,minmax(0,1fr));
- gap:12px;
- padding:12px
-}
-.card{
- background:#1a2138;
- border-radius:14px;
- overflow:hidden
-}
-.card img{
- width:100%;
- height:230px;
- object-fit:cover;
- display:block
-}
-.card h3{
- font-size:14px;
- text-align:center;
- padding:0 5px
-}
-.actions{
- display:flex;
- justify-content:center;
- gap:5px;
- padding:0 5px 12px
-}
-.actions button{
- font-size:12px;
- padding:10px
-}
-footer{
- text-align:center;
- padding:25px;
- color:#bbb
-}
-@media(min-width:700px){
- .gallery{grid-template-columns:repeat(4,minmax(0,1fr))}
- .card img{height:330px}
-}
+#gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:12px}
+.card{background:#202741;border-radius:12px;overflow:hidden}
+.card img{display:block;width:100%;height:220px;object-fit:cover}
+.card h3{text-align:center;font-size:14px;padding:0 5px}
+.actions{display:flex;justify-content:center;gap:5px;padding:0 4px 12px}
+.actions button{font-size:12px;padding:10px 8px}
+footer{text-align:center;padding:20px;color:#ccc}
+@media(min-width:700px){#gallery{grid-template-columns:repeat(4,minmax(0,1fr))}.card img{height:300px}}
 </style>
 </head>
-
 <body>
-
 <header>
 <h1>🌞 Daily Good Morning</h1>
 <p>Har subah khushiyon ke saath ❤️</p>
 </header>
-
-<div class="date" id="date"></div>
-
-<div class="categories">
-<button class="active" onclick="show('all',this)">✨ Sabhi</button>
-<button onclick="show('god',this)">🙏 Bhagwan Ji</button>
-<button onclick="show('nature',this)">🌹 Nature</button>
-<button onclick="show('quote',this)">💪 Motivation</button>
-</div>
-
-<div class="gallery" id="gallery"></div>
-
-<footer>
-🌺 Aapka din shubh aur mangalmay ho 🌺
-</footer>
+<div id="date"></div>
+<nav id="nav">
+<button class="active" data-cat="all">✨ Sabhi</button>
+<button data-cat="god">🙏 Bhagwan Ji</button>
+<button data-cat="nature">🌹 Nature</button>
+<button data-cat="quote">💪 Motivation</button>
+</nav>
+<div id="gallery"></div>
+<footer>🌺 Aapka din shubh aur mangalmay ho 🌺</footer>
 
 <script>
-const today = new Date();
+const photos=[
+{title:"Subah ka Sundar Nazara",cat:"nature",url:"https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=700&q=80"},
+{title:"Khoobsurat Phool",cat:"nature",url:"https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=700&q=80"},
+{title:"Hari Bhari Prakriti",cat:"nature",url:"https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=700&q=80"},
+{title:"Pahadon ka Nazara",cat:"nature",url:"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=700&q=80"},
+{title:"Prakriti se Prerna",cat:"quote",url:"https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=700&q=80"},
+{title:"Nayi Shuruaat",cat:"quote",url:"https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=700&q=80"},
+{title:"Subah ki Roshni",cat:"nature",url:"https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=700&q=80"},
+{title:"Bhakti aur Aastha",cat:"god",url:"https://images.unsplash.com/photo-1606293926075-69a00dbfde81?auto=format&fit=crop&w=700&q=80"}
+];
 
-document.getElementById("date").textContent =
-"📅 " + today.toLocaleDateString("hi-IN", {
-weekday:"long",
-day:"numeric",
-month:"long",
-year:"numeric"
+const date=new Date();
+document.getElementById("date").textContent="📅 "+date.toLocaleDateString("hi-IN",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+
+function render(category){
+const gallery=document.getElementById("gallery");
+gallery.replaceChildren();
+const list=photos.filter(p=>category==="all"||p.cat===category);
+
+list.forEach(p=>{
+const card=document.createElement("article");
+card.className="card";
+const img=document.createElement("img");
+img.src=p.url;
+img.alt=p.title;
+img.loading="lazy";
+
+const title=document.createElement("h3");
+title.textContent=p.title+" • "+date.getDate();
+
+const actions=document.createElement("div");
+actions.className="actions";
+const download=document.createElement("button");
+download.textContent="⬇️ Download";
+download.onclick=async()=>{
+try{
+const response=await fetch(p.url);
+if(!response.ok)throw new Error();
+const blob=await response.blob();
+const link=document.createElement("a");
+link.href=URL.createObjectURL(blob);
+link.download="good-morning.jpg";
+link.click();
+setTimeout(()=>URL.revokeObjectURL(link.href),2000);
+}catch(e){window.open(p.url,"_blank");}
+};
+
+const share=document.createElement("button");
+share.textContent="📲 Share";
+share.onclick=async()=>{
+if(navigator.share){
+try{await navigator.share({title:p.title,url:p.url});}catch(e){}
+}else{
+window.open("https://wa.me/?text="+encodeURIComponent(p.title+" "+p.url),"_blank");
+}
+};
+
+actions.append(download,share);
+card.append(img,title,actions);
+gallery.append(card);
+});
+}
+
+document.getElementById("nav").addEventListener("click",event=>{
+const button=event.target.closest("button");
+if(!button)return;
+document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("active",b===button));
+render(button.dataset.cat);
 });
 
-const photos = [
-{
-name:"Prakriti ki Sundarta",
-cat:"nature",
-url:"https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=700&q=80"
-},
-{
-name:"Khoobsurat Ph
+render("all");
+</script>
+</body>
+</html>
